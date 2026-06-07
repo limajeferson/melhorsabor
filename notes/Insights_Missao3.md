@@ -3,7 +3,11 @@
 **Data:** 2026-06-07  
 **Status:** ✅ Concluída  
 **Build:** ✅ 0 erros · 0 warnings · 7 rotas geradas  
-**Próxima:** Missão 4 — Supabase real + PostHog + Sentry
+**Próxima:** Missão 4 — PostHog + Sentry + geração automática de tipos Supabase
+
+> **🔗 Atualização pós-missão:** Projeto Supabase criado e conectado.  
+> Ref: `ljboadzbqzutwwogzmbq` | Região: São Paulo | Org: Melhor Sabor  
+> Migration `waitlist_emails` executada via MCP. Env vars prontas para o Vercel.
 
 ---
 
@@ -72,15 +76,17 @@
 
 ## ⚠️ Pendências para o Usuário
 
-### 🔴 Criar projeto no Supabase (15 minutos)
-1. Acesse https://app.supabase.com → New Project
-2. Nome: `melhorsabor` | Região: South America (São Paulo)
-3. Copie `Project URL` e `anon key` → adicione no painel Vercel:
-   - `NEXT_PUBLIC_SUPABASE_URL`
-   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-   - `SUPABASE_SERVICE_ROLE_KEY`
-4. No SQL Editor do Supabase, execute o conteúdo de:
-   `supabase/migrations/20260607_001_waitlist_emails.sql`
+### ✅ Supabase — CONCLUÍDO
+- Projeto criado: `ljboadzbqzutwwogzmbq` (São Paulo)
+- URL: `https://ljboadzbqzutwwogzmbq.supabase.co`
+- Migration `waitlist_emails` executada via Supabase MCP
+- RLS ativa: anon pode INSERT, service_role pode SELECT
+
+### 🔴 Pendente: Variáveis de ambiente no Vercel
+Adicionar no painel Vercel → Settings → Environment Variables:
+- `NEXT_PUBLIC_SUPABASE_URL` = `https://ljboadzbqzutwwogzmbq.supabase.co`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` = (obter em Supabase → Settings → API → Project API keys → `anon public`)
+- `SUPABASE_SERVICE_ROLE_KEY` = (obter em Supabase → Settings → API → Project API keys → `service_role` — **nunca commitar**)
 
 ### 🟡 Ativar Vercel Analytics
 - Vercel Dashboard → seu projeto → Analytics → Enable
