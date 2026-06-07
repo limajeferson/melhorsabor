@@ -1,11 +1,19 @@
-Aja como meu Analista Estratégico do projeto MelhorSabor. Com base nas instruções de governança do ECOSYSTEM_GUIDE.md e no documento NOTEBOOKLM_INSTRUCOES_MELHORSABOR.md, preciso que você gere o texto exato para o arquivo CONTEXT_SYNC.md da Missão 1. 
+### CONTEXT_SYNC.md: Missão 2 — Next.js Bootstrap
 
-A Missão 1 é focada na "Fundação e Estrutura". O escopo que o Claude Code deverá executar inclui:
-1. Criar a estrutura de pastas base (.claude/, apps/, docs/, notes/).
-2. Criar o arquivo .claude/CLAUDE.md adaptando as regras do projeto base para o MelhorSabor (Next.js, Tailwind, Supabase, Custo Zero, compliance LGPD).
-3. Inicializar o repositório utilizando a GitHub CLI.
-4. Inicializar o Next.js (App Router) e criar um README.md base.
+#### 1. Status Atual
+- Missão 1 (Fundação) concluída. 
+- Bloqueio do `gh CLI` resolvido: Repositório GitHub remoto já foi criado e linkado pelo usuário.
+- Escopo atual listado nos insights da Missão 1.
 
-Gere o documento CONTEXT_SYNC.md com menos de 60 linhas, focado na ação do Claude Code.
+#### 2. Objetivo da Tarefa
+- Realizar o bootstrap estrutural do frontend com Next.js, Tailwind e shadcn/ui.
+- Conectar a base do projeto para o primeiro deploy na Vercel.
 
-Observação: Alguns arquivos já estão criados, analise toda a pasta, elabore uma auditoria do que está no projeto e altere e promova mudanças de tudo que precisar ser corrigido, como alguns arquivos foram copiados do projeto PromoBest, entenda o que precisa ser convertido para atuação no projeto Melhor Sabor. 
+#### 3. Próximos Passos (Action para Claude Code)
+1. Inicialize um projeto Next.js 14 (App Router, TypeScript, Tailwind) na pasta `apps/frontend/`.
+2. Configure a base do `shadcn/ui` para iniciar o design system.
+3. Configure os metadados do layout base (`app/layout.tsx`), além do `next.config.js` e `tsconfig.json`.
+4. Crie uma página inicial provisória (`app/page.tsx`) anunciando a Plataforma MelhorSabor com o conceito: "O alimento é o código-fonte".
+5. Faça o commit de fundação e o push para a branch `main`.
+6. Tente inicializar a conexão com a Vercel via CLI. Se pedir autenticação interativa ou falhar no ambiente sandbox, apenas pule esta etapa para o usuário fazer manualmente, mas deixe o código pronto.
+7. Encerre gerando o arquivo `notes/Insights_Missao2.md`.
