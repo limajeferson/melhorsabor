@@ -4,17 +4,30 @@ import { useActionState, useEffect, useRef } from "react";
 import { joinWaitlist, type WaitlistState } from "@/app/actions/waitlist";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, AlertCircle, Loader2 } from "lucide-react";
+import posthog from "posthog-js";
 
 const initialState: WaitlistState = { status: "idle" };
 
 export function WaitlistForm() {
   const [state, action, isPending] = useActionState(joinWaitlist, initialState);
   const inputRef = useRef<HTMLInputElement>(null);
+  const trackedRef = useRef(false);
 
-  // Limpa o campo após sucesso
   useEffect(() => {
-    if (state.status === "success" && inputRef.current) {
-      inputRef.current.value = "";
+    if (state.status === "success") {
+      // Limpa o campo
+      if (inputRef.current) inputRef.current.value = "";
+
+      // Dispara evento PostHog (apenas uma vez por submissão)
+      if (!trackedRef.current) {
+        trackedRef.current = true;
+        posthog.capture("waitlist_joined", {
+          source: "landing_hero",
+          message: state.message,
+        });
+      }
+    } else {
+      trackedRef.current = false;
     }
   }, [state]);
 
