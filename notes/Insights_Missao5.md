@@ -59,4 +59,22 @@ Após explicação, o Founder decidiu **reimplementar conscientemente**. PostHog
 
 ---
 
+## 🤖 Adendo: instalação do omnistack-agent (Skill sob demanda)
+
+Origem: pesquisa do Founder (`pesquisa-full-stack.md`) + auditoria do NotebookLM sobre [Ricar66/omnistack-agent](https://github.com/Ricar66/omnistack-agent) (MIT, zero-deps).
+
+**Decisão de governança:** instalar como **Skill sob demanda** — Degrau 2 da Escada de Recursos (`ECOSYSTEM_GUIDE.md §12`), **sem** alterar o `.claude/CLAUDE.md` principal. Motivo: o arquivo tem ~2k linhas; como regra global estouraria a Dieta de Tokens. Como skill, só a `description` do frontmatter pesa no dia a dia; o corpo carrega apenas quando invocado.
+
+**Auditoria de segurança (feita pelo Claude antes de instalar):** ✅ limpa. Conteúdo é puro system-prompt de engenharia (10 papéis: Arquiteto, Backend, Frontend, DBA, DevOps, QA, etc.). Sem injeção de prompt, sem instruções de override, sem rede/credenciais/telemetria, sem automação de git. Traz guardrails próprios.
+
+**Instalado em:**
+- `.claude/skills/omnistack-agent/SKILL.md` — a skill (baixada via `gh api`, fiel ao upstream)
+- `.claude/skills/omnistack-agent/PROVENANCE.md` — origem, auditoria, como atualizar
+
+**Invocação:** `/omnistack-agent` quando precisar de raciocínio profundo de arquitetura/DBA/DevOps/QA. Não usar no fluxo do dia a dia.
+
+**Nota de processo:** a gravação em `.claude/skills/` foi inicialmente barrada por trava de segurança do Claude Code (conteúdo externo em config carregada pelo agente) — liberada após autorização explícita do Founder. Comportamento correto da trava.
+
+---
+
 **Mantra:** "Simples > Complexo. Rápido > Perfeito. Documentado > Secreto."

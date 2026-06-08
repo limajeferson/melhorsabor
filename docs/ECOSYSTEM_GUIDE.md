@@ -413,6 +413,14 @@ Use **sempre a ferramenta mais barata que resolve o problema**. Suba um degrau a
 
 **Regra prática:** se o `/go` (fluxo normal de tarefa) resolve, não invoque Workflows. A complexidade de orquestração tem custo de token, tempo de setup e risco de deriva.
 
+#### Skills instaladas (Degrau 2)
+
+| Skill | Invocação | Quando usar | Proveniência |
+|-------|-----------|-------------|--------------|
+| `omnistack-agent` | `/omnistack-agent` | Raciocínio profundo de Arquiteto / DBA / DevOps / QA / revisão de design full-stack (10 papéis) | Externa (MIT, zero-deps) — auditada. Ver `.claude/skills/omnistack-agent/PROVENANCE.md` |
+
+> Instalada como Skill sob demanda **de propósito**: o corpo (~2k linhas) só carrega quando invocada, então não fere a Dieta de Tokens. Não é regra global — o `.claude/CLAUDE.md` permanece enxuto. Para o dia a dia, use o fluxo normal; só invoque quando a profundidade justificar.
+
 ---
 
 ### Quando usar Dynamic Workflows

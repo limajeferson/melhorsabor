@@ -47,7 +47,8 @@
 - [[docs/CARTA_ESTRATEGICA]] — carta estratégica fundacional
 
 ### Ecossistema de Ferramentas
-- [[docs/ECOSYSTEM_GUIDE]] — guia de uso Claude + NotebookLM + Cowork
+- [[docs/ECOSYSTEM_GUIDE]] — guia de uso Claude + NotebookLM + Cowork (§12 lista skills instaladas)
+- `.claude/skills/omnistack-agent/` — Skill sob demanda `/omnistack-agent` (Arquiteto/DBA/DevOps/QA) · MIT, auditada
 - [[docs/ECOSSISTEMA_EXPANDIDO]] — visão expandida do ecossistema
 - [[docs/MULTIPLOS_MODELOS]] — estratégia multi-model
 - [[docs/NOTEBOOKLM_INSTRUCOES_MELHORSABOR]] — instruções para o NotebookLM
@@ -103,4 +104,4 @@ Para iniciar qualquer sessão com contexto suficiente, ler nesta ordem:
 2. `CONTEXT_SYNC.md.md` — missão em andamento
 3. `notes/Insights_MissaoX.md` (a mais recente) — o que foi feito
 
-*Atualizado: 2026-06-08 | Versão: 1.5*
+*Atualizado: 2026-06-08 | Versão: 1.6*
