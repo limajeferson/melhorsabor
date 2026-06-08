@@ -6,11 +6,6 @@ const nextConfig: NextConfig = {
   compress: true,
   poweredByHeader: false,
 
-  // Instrumentation hook — necessário para Sentry server-side no App Router
-  experimental: {
-    instrumentationHook: true,
-  },
-
   // Imagens externas (adicionar dominios quando necessario)
   images: {
     formats: ["image/avif", "image/webp"],
