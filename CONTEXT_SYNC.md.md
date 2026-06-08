@@ -1,19 +1,18 @@
-### CONTEXT_SYNC.md: Missão 2 — Next.js Bootstrap
+### CONTEXT_SYNC.md: Missão 4 — Telemetria, Supabase Types e UI de Onboarding
 
 #### 1. Status Atual
-- Missão 1 (Fundação) concluída. 
-- Bloqueio do `gh CLI` resolvido: Repositório GitHub remoto já foi criado e linkado pelo usuário.
-- Escopo atual listado nos insights da Missão 1.
+- Missão 3 concluída: Landing animada, Waitlist integrada, LGPD pronta.
+- Projeto Supabase criado e conectado com sucesso (migration executada).
+- Nova Visão de Produto documentada em `Product_Vision_Notes.md` (Foco em performance humana e onboarding gamificado).
 
 #### 2. Objetivo da Tarefa
-- Realizar o bootstrap estrutural do frontend com Next.js, Tailwind e shadcn/ui.
-- Conectar a base do projeto para o primeiro deploy na Vercel.
+- Substituir as tipagens manuais do Supabase por tipos gerados automaticamente via CLI.
+- Instalar e configurar a stack de APM (PostHog para eventos + Sentry para erros).
+- Construir o scaffold (UI inicial) do "Onboarding de Qualificação" ditado na visão do produto.
 
 #### 3. Próximos Passos (Action para Claude Code)
-1. Inicialize um projeto Next.js 14 (App Router, TypeScript, Tailwind) na pasta `apps/frontend/`.
-2. Configure a base do `shadcn/ui` para iniciar o design system.
-3. Configure os metadados do layout base (`app/layout.tsx`), além do `next.config.js` e `tsconfig.json`.
-4. Crie uma página inicial provisória (`app/page.tsx`) anunciando a Plataforma MelhorSabor com o conceito: "O alimento é o código-fonte".
-5. Faça o commit de fundação e o push para a branch `main`.
-6. Tente inicializar a conexão com a Vercel via CLI. Se pedir autenticação interativa ou falhar no ambiente sandbox, apenas pule esta etapa para o usuário fazer manualmente, mas deixe o código pronto.
-7. Encerre gerando o arquivo `notes/Insights_Missao2.md`.
+1. **Supabase Gen Types:** Utilize a CLI do Supabase (via `npx`) para gerar o arquivo `types/database.types.ts` atualizado diretamente do projeto remoto. Substitua os tipos manuais atuais pela tipagem oficial.
+2. **Setup PostHog & Sentry:** Instale os SDKs oficiais. Configure o Sentry para captura de erros no Next.js (App Router) e o PostHog via provider global. Adicione variáveis mockadas no `.env.example`.
+3. **Tracking de Conversão:** Injete um evento do PostHog (ex: `waitlist_joined`) dentro da Server Action ou da UI de sucesso do componente de Waitlist.
+4. **Onboarding UI (Fase 2):** Leia o `Product_Vision_Notes.md`. Crie a rota `/onboarding` contendo a "Etapa 1 - Landing de Qualificação" (perguntas sobre objetivo, acesso à academia e hábito de cozinhar). Use `framer-motion` para transições suaves entre as perguntas.
+5. **Encerramento:** Ao finalizar o fluxo e garantir build limpo, crie o arquivo `notes/Insights_Missao4.md`.
