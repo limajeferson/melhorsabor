@@ -6,6 +6,10 @@ const nextConfig: NextConfig = {
   compress: true,
   poweredByHeader: false,
 
+  // Turbopack: config vazia para silenciar erro no Next.js 16 (Turbopack é default)
+  // withSentryConfig injeta webpack config; turbopack:{} diz que estamos cientes
+  turbopack: {},
+
   // Imagens externas (adicionar dominios quando necessario)
   images: {
     formats: ["image/avif", "image/webp"],
