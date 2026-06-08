@@ -4,16 +4,29 @@ import { useActionState, useEffect, useRef } from "react";
 import { joinWaitlist, type WaitlistState } from "@/app/actions/waitlist";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, AlertCircle, Loader2 } from "lucide-react";
+import { AnalyticsEvent, identify, track } from "@/lib/analytics";
 
 const initialState: WaitlistState = { status: "idle" };
 
 export function WaitlistForm() {
   const [state, action, isPending] = useActionState(joinWaitlist, initialState);
   const inputRef = useRef<HTMLInputElement>(null);
+  const trackedRef = useRef(false);
 
   useEffect(() => {
     if (state.status === "success") {
+      // Captura o e-mail antes de limpar o campo (para identify/CRM).
+      const email = inputRef.current?.value?.trim();
       if (inputRef.current) inputRef.current.value = "";
+
+      // Dispara o evento uma única vez por submissão.
+      if (!trackedRef.current) {
+        trackedRef.current = true;
+        if (email) identify(email, { email, signup_source: "landing_hero" });
+        track(AnalyticsEvent.WaitlistJoined, { source: "landing_hero" });
+      }
+    } else {
+      trackedRef.current = false;
     }
   }, [state]);
 

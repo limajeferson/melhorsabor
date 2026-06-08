@@ -91,6 +91,7 @@ colaboradores). Validado em 2026-05-23.
 |---------|--------------|
 | `docs/SHOPEE_ML_API_GUIDE.md` | Quando for trabalhar com afiliados / CNPJ / Shopee / ML |
 | `docs/analytics.md` | Quando for trabalhar com analytics/KPIs/RFM/A-B |
+| `docs/POSTHOG_GUIDE.md` | Quando for mexer em eventos/funil/segmentação/CRM (MelhorSabor) — taxonomia em `lib/analytics.ts` |
 
 #### ❌ Internos — **não subir** (conflitam ou estão obsoletos)
 

@@ -16,7 +16,7 @@
 | Next.js 16 + App Router | ✅ | `apps/frontend/` |
 | Supabase (São Paulo) | ✅ | `ljboadzbqzutwwogzmbq` |
 | Waitlist funcional | ✅ | tabela `waitlist_emails` |
-| PostHog analytics | ✅ | evento `waitlist_joined` + `onboarding_completed` |
+| PostHog analytics | ✅ | reimplementado (M5) c/ pageview + funil onboarding · ver [[docs/POSTHOG_GUIDE]] |
 | Sentry error monitoring | ✅ | v8, client + server |
 | Tipos Supabase (auto) | ✅ | `types/database.types.ts` |
 | Landing Page animada | ✅ | framer-motion |
@@ -38,6 +38,7 @@
 ### Arquitetura
 - [[docs/BLUEPRINT]] — stack técnico, decisões arquiteturais, diagrama de camadas
 - [[notes/Architectural_Recommendations]] — ADR: PostHog vs Mixpanel, Sentry vs Datadog
+- [[docs/POSTHOG_GUIDE]] — por que/como do PostHog: funil, segmentação, CRM, eventos
 
 ### Visão de Produto
 - [[notes/Product_Vision_Notes]] — posicionamento, onboarding, LGPD, afiliados, roadmap de features
@@ -56,7 +57,8 @@
 - [[notes/Insights_Missao1]] — setup inicial, estrutura de pastas, git
 - [[notes/Insights_Missao2]] — Next.js, shadcn/ui, Tailwind, deploy Vercel
 - [[notes/Insights_Missao3]] — landing animada, waitlist, LGPD, favicon, Supabase conectado
-- [[notes/Insights_Missao4]] — PostHog, Sentry, tipos Supabase, onboarding UI ← **mais recente**
+- [[notes/Insights_Missao4]] — PostHog, Sentry, tipos Supabase, onboarding UI
+- [[notes/Insights_Missao5]] — PostHog reimplementado: funil, taxonomia de eventos, identify/CRM ← **mais recente**
 
 ---
 
@@ -101,4 +103,4 @@ Para iniciar qualquer sessão com contexto suficiente, ler nesta ordem:
 2. `CONTEXT_SYNC.md.md` — missão em andamento
 3. `notes/Insights_MissaoX.md` (a mais recente) — o que foi feito
 
-*Atualizado: 2026-06-08 | Versão: 1.4*
+*Atualizado: 2026-06-08 | Versão: 1.5*

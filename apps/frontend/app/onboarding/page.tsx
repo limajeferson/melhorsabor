@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChefHat, ArrowRight, ArrowLeft, Check } from "lucide-react";
 import Link from "next/link";
+import { AnalyticsEvent, track } from "@/lib/analytics";
 
 // ---------------------------------------------------------------------------
 // Tipos
@@ -110,6 +111,11 @@ export default function OnboardingPage() {
   const selectedOption = answers[step?.id];
   const isLast = currentStep === STEPS.length - 1;
 
+  // Marca o início do funil (uma vez por sessão de onboarding).
+  useEffect(() => {
+    track(AnalyticsEvent.OnboardingStarted, { total_steps: STEPS.length });
+  }, []);
+
   function selectOption(optionId: OptionId) {
     setAnswers((prev) => ({ ...prev, [step.id]: optionId }));
   }
@@ -117,7 +123,18 @@ export default function OnboardingPage() {
   function goNext() {
     if (!selectedOption) return;
 
+    // Registra a resposta da etapa — permite ver onde os usuários abandonam.
+    track(AnalyticsEvent.OnboardingStepAnswered, {
+      step_id: step.id,
+      step_index: currentStep,
+      answer: selectedOption,
+    });
+
     if (isLast) {
+      track(AnalyticsEvent.OnboardingCompleted, {
+        ...answers,
+        [step.id]: selectedOption,
+      });
       setCompleted(true);
       return;
     }
