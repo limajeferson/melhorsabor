@@ -4,7 +4,6 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChefHat, ArrowRight, ArrowLeft, Check } from "lucide-react";
 import Link from "next/link";
-import posthog from "posthog-js";
 
 // ---------------------------------------------------------------------------
 // Tipos
@@ -119,11 +118,6 @@ export default function OnboardingPage() {
     if (!selectedOption) return;
 
     if (isLast) {
-      // Dispara evento de conclusão no PostHog
-      posthog.capture("onboarding_completed", {
-        ...answers,
-        [step.id]: selectedOption,
-      });
       setCompleted(true);
       return;
     }
