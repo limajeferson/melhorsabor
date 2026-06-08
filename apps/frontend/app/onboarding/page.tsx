@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, type Variants } from "framer-motion";
 import { ChefHat, ArrowRight, ArrowLeft, Check } from "lucide-react";
 import Link from "next/link";
 import { AnalyticsEvent, track } from "@/lib/analytics";
@@ -80,7 +80,7 @@ const STEPS: Step[] = [
 // ---------------------------------------------------------------------------
 // Animações
 // ---------------------------------------------------------------------------
-const slideVariants = {
+const slideVariants: Variants = {
   enter: (dir: number) => ({
     x: dir > 0 ? 60 : -60,
     opacity: 0,
