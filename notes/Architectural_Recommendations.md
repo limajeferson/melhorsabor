@@ -1,5 +1,7 @@
 # 🏗️ Recomendações Arquiteturais — APM & Observabilidade
 
+> 🔗 Navegação: [[INDEX]] | [[docs/BLUEPRINT]] | [[notes/Insights_Missao3]] | [[notes/Insights_Missao4]]
+
 **Data:** 2026-06-07  
 **Autor:** Claude Code (Agente de Arquitetura)  
 **Contexto:** Missão 3 — Custo operacional zero, escala inicial < 10k usuários  

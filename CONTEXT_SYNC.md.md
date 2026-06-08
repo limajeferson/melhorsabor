@@ -1,3 +1,5 @@
+> 🔗 Navegação: [[INDEX]] | [[CLAUDE_CODE_MASTER_PLAN]] | [[notes/Insights_Missao4]]
+
 ### CONTEXT_SYNC.md: Missão 4 — Telemetria, Supabase Types e UI de Onboarding
 
 #### 1. Status Atual

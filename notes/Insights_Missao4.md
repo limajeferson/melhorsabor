@@ -1,7 +1,9 @@
 # Insights — Missão 4: Telemetria + Tipos + Onboarding
 
+> 🔗 Navegação: [[INDEX]] | [[CLAUDE_CODE_MASTER_PLAN]] | ← [[notes/Insights_Missao3]] | [[notes/Product_Vision_Notes]]
+
 **Data:** 2026-06-07  
-**Status:** ✅ Concluída (npm install pendente no Windows — instruções abaixo)
+**Status:** ✅ Concluída · npm install: rodar com `legacy-peer-deps` (`.npmrc` configurado)
 
 ---
 

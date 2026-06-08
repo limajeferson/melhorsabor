@@ -3,8 +3,9 @@
 > Roadmap macro das 5 fases de desenvolvimento.
 > Este documento é a bússola estratégica — atualizar a cada fase concluída.
 
-**Data de criação:** 2026-06-07  
-**Status atual:** Fase 1 — Fundação ✅
+**Data de criação:** 2026-06-07 | **Última atualização:** 2026-06-08
+**Status atual:** Fase 1 ✅ completa → entrando na Fase 2
+**Leitura rápida:** ver [[INDEX]] para estado atual do projeto
 
 ---
 
@@ -12,8 +13,8 @@
 
 | Fase | Nome | Status | Estimativa |
 |------|------|--------|-----------|
-| 1 | Fundação & Estrutura | 🔄 Em andamento | 1 semana |
-| 2 | MVP — Landing + Schema BD | ⏳ Pendente | 2 semanas |
+| 1 | Fundação & Estrutura | ✅ Concluída | 1 semana |
+| 2 | MVP — Onboarding + Auth + Receitas | 🔄 Em andamento | 2 semanas |
 | 3 | Core Features — Receitas + IA | ⏳ Pendente | 3 semanas |
 | 4 | Monetização + SEO + Marketing | ⏳ Pendente | 2 semanas |
 | 5 | Escala + Performance + Analytics | ⏳ Pendente | contínuo |
@@ -24,41 +25,53 @@
 
 **Objetivo:** Repositório, governança e estrutura base prontos.
 
-### Missão 1: Setup Inicial
+### Missão 1: Setup Inicial ✅
 - [x] Criar `.claude/CLAUDE.md` com regras do projeto
 - [x] Criar `CLAUDE_CODE_MASTER_PLAN.md`
 - [x] Estruturar pastas: `apps/`, `docs/`, `notes/`, `scripts/`
 - [x] `.gitignore`, `.env.example`, `package.json`, `README.md`
 - [x] GitHub Actions CI (`lint + build`)
-- [ ] Inicializar git + criar repositório no GitHub
+- [x] Inicializar git + criar repositório no GitHub
 - [x] `docs/BLUEPRINT.md` (arquitetura)
-- [x] `notes/Insights_Missao1.md`
+- [x] [[notes/Insights_Missao1]]
 
-### Missão 2: Next.js Bootstrap
-- [ ] Inicializar Next.js 14 com App Router
-- [ ] Configurar Tailwind + shadcn/ui
-- [ ] Layout base + tema MelhorSabor (verde/laranja)
-- [ ] Página inicial (placeholder)
-- [ ] Deploy no Vercel
+### Missão 2: Next.js Bootstrap ✅
+- [x] Inicializar Next.js 16 com App Router
+- [x] Configurar Tailwind v4 + shadcn/ui
+- [x] Layout base + tema MelhorSabor (verde/laranja)
+- [x] Página inicial com hero animado (framer-motion)
+- [x] Deploy no Vercel
+- [x] [[notes/Insights_Missao2]]
 
 ---
 
 ## 🎯 Fase 2 — MVP
 
-**Objetivo:** Landing page funcional + schema do banco de dados.
+**Objetivo:** Onboarding completo + auth + primeiras receitas.
 
-### Missão 3: Landing Page
-- [ ] Hero section com proposta de valor
-- [ ] Formulário de captura de email (waitlist)
-- [ ] SEO básico (meta tags, Open Graph)
-- [ ] Deploy na Vercel com domínio melhorsabor.com.br
+### Missão 3: Landing Page + Waitlist ✅
+- [x] Hero section animado com proposta de valor
+- [x] Formulário de captura de email (waitlist → Supabase)
+- [x] SEO básico (meta tags, Open Graph, sitemap.xml)
+- [x] `/termos` e `/privacidade` (LGPD)
+- [x] Supabase projeto criado (ref: `ljboadzbqzutwwogzmbq`)
+- [x] [[notes/Insights_Missao3]]
 
-### Missão 4: Schema do Banco
-- [ ] Criar projeto no Supabase
-- [ ] Schema: users, recipes, categories, tags
-- [ ] RLS policies iniciais
-- [ ] Autenticação (Supabase Auth)
-- [ ] Tipos TypeScript gerados do schema
+### Missão 4: Telemetria + Onboarding UI ✅
+- [x] Tipos Supabase auto-gerados (`types/database.types.ts`)
+- [x] PostHog analytics (evento `waitlist_joined`)
+- [x] Sentry error monitoring (v8, App Router)
+- [x] `/onboarding` — 4 etapas com framer-motion
+- [x] Evento `onboarding_completed` com perfil completo
+- [x] [[notes/Insights_Missao4]]
+- [x] [[notes/Product_Vision_Notes]] criado
+
+### Missão 5: Auth + Perfil de Usuário ⏳
+- [ ] Supabase Auth (email + OAuth Google)
+- [ ] Tabela `user_profiles` com respostas do onboarding
+- [ ] Salvar onboarding no banco ao finalizar
+- [ ] Link "Monte seu perfil" na landing → `/onboarding`
+- [ ] Página `/perfil` (proteção por autenticação)
 
 ---
 

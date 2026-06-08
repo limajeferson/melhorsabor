@@ -1,64 +1,104 @@
 # 📋 INDEX — MelhorSabor
 
-> Painel de controle do projeto. Atualizado a cada missão.
+> Painel de controle do projeto. Primeira leitura obrigatória em qualquer nova sessão do Claude.
+> Atualizado ao fim de cada missão.
 
-**Data:** 2026-06-07 | **Fase:** 1 — Fundação | **Missão atual:** 1 ✅
-
----
-
-## 🚦 Status
-
-| Item | Status |
-|------|--------|
-| Repositório GitHub | ⏳ Criar |
-| .claude/CLAUDE.md | ✅ |
-| Estrutura de pastas | ✅ |
-| docs/BLUEPRINT.md | ✅ |
-| CLAUDE_CODE_MASTER_PLAN.md | ✅ |
-| Next.js bootstrap | ⏳ Missão 2 |
-| Supabase schema | ⏳ Missão 4 |
-| Deploy Vercel | ⏳ Missão 2 |
+**Data:** 2026-06-08 | **Fase:** 1 → 2 (transição) | **Missão concluída:** 4 ✅
 
 ---
 
-## 📁 Arquivos Chave
+## 🚦 Status Geral
 
-| Arquivo | Propósito |
-|---------|----------|
-| `.claude/CLAUDE.md` | Regras do projeto para Claude Code |
-| `CONTEXT_SYNC.md` | Briefing atual (gerado por NotebookLM) |
-| `CLAUDE_CODE_MASTER_PLAN.md` | Roadmap macro (5 fases) |
-| `docs/BLUEPRINT.md` | Arquitetura técnica |
-| `notes/Insights_Missao1.md` | Aprendizados da Missão 1 |
-
----
-
-## 🗂 Documentos Estratégicos (docs/)
-
-- `BLUEPRINT.md` — arquitetura técnica ← **novo**
-- `NOTEBOOKLM_INSTRUCOES_MELHORSABOR.md` — instruções para NotebookLM
-- `CLAUDE_TEMPLATE_MELHORSABOR.md` — template de referência
-- `RESUMO_EXECUTIVO_MELHORSABOR.md` — visão executiva
-- `ECOSYSTEM_GUIDE.md` — guia do ecossistema de ferramentas
-
----
-
-## 📝 Notas de Missões (notes/)
-
-| Missão | Arquivo | Status |
-|--------|---------|--------|
-| 1 | `Insights_Missao1.md` | ✅ |
+| Componente | Status | Detalhe |
+|------------|--------|---------|
+| Repositório GitHub | ✅ | [limajeferson/melhorsabor](https://github.com/limajeferson/melhorsabor) |
+| Deploy Vercel | ✅ | melhorsabor.com.br |
+| Next.js 16 + App Router | ✅ | `apps/frontend/` |
+| Supabase (São Paulo) | ✅ | `ljboadzbqzutwwogzmbq` |
+| Waitlist funcional | ✅ | tabela `waitlist_emails` |
+| PostHog analytics | ✅ | evento `waitlist_joined` + `onboarding_completed` |
+| Sentry error monitoring | ✅ | v8, client + server |
+| Tipos Supabase (auto) | ✅ | `types/database.types.ts` |
+| Landing Page animada | ✅ | framer-motion |
+| LGPD (`/termos`, `/privacidade`) | ✅ | |
+| Onboarding UI (`/onboarding`) | ✅ | 4 etapas qualificação |
+| Supabase Auth | ⏳ | Missão 5 |
+| Tabela `user_profiles` | ⏳ | Missão 5 |
+| Sistema de receitas | ⏳ | Fase 3 |
 
 ---
 
-## 🔄 Próxima Missão
+## 🗺️ Mapa de Documentos
 
-**Missão 2:** Next.js Bootstrap
-- Inicializar Next.js 14 (App Router)
-- Configurar Tailwind + shadcn/ui
-- Layout base + tema MelhorSabor
-- Deploy no Vercel
+### Governança e Estratégia
+- [[CLAUDE_CODE_MASTER_PLAN]] — roadmap macro 5 fases, **ler antes de qualquer missão nova**
+- [[CONTEXT_SYNC.md]] — briefing atual gerado pelo NotebookLM, **ler no início de cada sessão**
+- [[.claude/CLAUDE.md]] — regras não-negociáveis do projeto
+
+### Arquitetura
+- [[docs/BLUEPRINT]] — stack técnico, decisões arquiteturais, diagrama de camadas
+- [[notes/Architectural_Recommendations]] — ADR: PostHog vs Mixpanel, Sentry vs Datadog
+
+### Visão de Produto
+- [[notes/Product_Vision_Notes]] — posicionamento, onboarding, LGPD, afiliados, roadmap de features
+- [[docs/RESUMO_EXECUTIVO_MELHORSABOR]] — pitch executivo do produto
+- [[docs/ROADMAP_EXECUCAO]] — roadmap detalhado de execução
+- [[docs/CARTA_ESTRATEGICA]] — carta estratégica fundacional
+
+### Ecossistema de Ferramentas
+- [[docs/ECOSYSTEM_GUIDE]] — guia de uso Claude + NotebookLM + Cowork
+- [[docs/ECOSSISTEMA_EXPANDIDO]] — visão expandida do ecossistema
+- [[docs/MULTIPLOS_MODELOS]] — estratégia multi-model
+- [[docs/NOTEBOOKLM_INSTRUCOES_MELHORSABOR]] — instruções para o NotebookLM
+- [[docs/CLAUDE_TEMPLATE_MELHORSABOR]] — template base para prompts
+
+### Histórico de Missões
+- [[notes/Insights_Missao1]] — setup inicial, estrutura de pastas, git
+- [[notes/Insights_Missao2]] — Next.js, shadcn/ui, Tailwind, deploy Vercel
+- [[notes/Insights_Missao3]] — landing animada, waitlist, LGPD, favicon, Supabase conectado
+- [[notes/Insights_Missao4]] — PostHog, Sentry, tipos Supabase, onboarding UI ← **mais recente**
 
 ---
 
-*Atualizado: 2026-06-07*
+## 🔄 Ciclo de Trabalho
+
+```
+NotebookLM → CONTEXT_SYNC.md → Claude Code → commit/push → Vercel deploy
+     ↑                                                            ↓
+  Jeferson ←←←←←←←← notes/Insights_MissaoX.md ←←←←←←←←←←←←←←←←←
+```
+
+---
+
+## 📂 Estrutura de Pastas Chave
+
+```
+melhorsabor/
+├── .claude/CLAUDE.md          ← regras do projeto
+├── CONTEXT_SYNC.md.md         ← briefing atual (NotebookLM)
+├── CLAUDE_CODE_MASTER_PLAN.md ← roadmap macro
+├── INDEX.md                   ← este arquivo
+├── apps/frontend/             ← Next.js 16 App Router
+│   ├── app/
+│   │   ├── onboarding/page.tsx
+│   │   └── (legal)/termos|privacidade
+│   ├── components/
+│   │   ├── providers/PostHogProvider.tsx
+│   │   └── waitlist-form.tsx
+│   ├── types/database.types.ts ← gerado via Supabase MCP
+│   ├── instrumentation.ts      ← Sentry server-side
+│   └── .npmrc                  ← legacy-peer-deps (Sentry v8 + Next 16)
+├── docs/                      ← documentos estratégicos
+└── notes/                     ← insights por missão
+```
+
+---
+
+## ⚡ Contexto Mínimo para Nova Sessão
+
+Para iniciar qualquer sessão com contexto suficiente, ler nesta ordem:
+1. `INDEX.md` (este arquivo) — estado atual
+2. `CONTEXT_SYNC.md.md` — missão em andamento
+3. `notes/Insights_MissaoX.md` (a mais recente) — o que foi feito
+
+*Atualizado: 2026-06-08 | Versão: 1.4*

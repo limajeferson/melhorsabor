@@ -1,5 +1,7 @@
 # 🏛️ BLUEPRINT — Arquitetura MelhorSabor
 
+> 🔗 Navegação: [[INDEX]] | [[CLAUDE_CODE_MASTER_PLAN]] | [[notes/Architectural_Recommendations]] | [[notes/Product_Vision_Notes]]
+
 > Documento de referência arquitetônica. Atualizar sempre que houver decisões estruturais.
 
 **Versão:** 1.0  

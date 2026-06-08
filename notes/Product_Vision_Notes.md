@@ -1,5 +1,7 @@
 # 🧠 Product Vision Notes — MelhorSabor
 
+> 🔗 Navegação: [[INDEX]] | [[CLAUDE_CODE_MASTER_PLAN]] | [[docs/BLUEPRINT]] | [[notes/Insights_Missao4]]
+
 **Origem:** Insights de corrida · 07/06/2026  
 **Formato:** Notas brutas organizadas — input para NotebookLM nas próximas missões  
 **Status:** Vivo — atualizado conforme surgem novos insights
