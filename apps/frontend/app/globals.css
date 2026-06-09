@@ -19,12 +19,14 @@
      o eixo saúde/frescor. Usada em landing e telas de oferta.
      ---------------------------------------------------------------- */
   --color-cream: #fffaf3;     /* fundo pastel quente */
-  --color-peach: #ffe3d3;     /* pêssego suave */
-  --color-apricot: #fcbf86;   /* damasco */
-  --color-honey: #ffd27d;     /* mel / amarelo apetite */
-  --color-tomato: #e8553b;    /* vermelho-tomate (apetite, CTA) */
-  --color-paprika: #c9412b;   /* páprica (hover/contraste) */
-  --color-sage: #80b49b;      /* verde-sálvia pastel (saúde) */
+  --color-peach: #ffe8d6;     /* pêssego suave */
+  --color-apricot: #ffc985;   /* damasco claro */
+  --color-honey: #ffd27d;     /* mel / amarelo alegria */
+  --color-tomato: #f47b3a;    /* laranja-vitalidade (CTA principal — energia, confiança) */
+  --color-paprika: #d95f1a;   /* laranja escuro (hover) */
+  --color-sage: #7ab8a0;      /* verde-sálvia pastel (saúde/frescor) */
+  --color-nude: #f5ede3;      /* nude pastel (fundos de card) */
+  --color-warm-gray: #7a6f69; /* cinza quente (texto secundário) */
 
   /* shadcn/ui CSS Variables */
   --background: 0 0% 100%;
@@ -67,6 +69,8 @@
   --color-tomato: var(--color-tomato);
   --color-paprika: var(--color-paprika);
   --color-sage: var(--color-sage);
+  --color-nude: var(--color-nude);
+  --color-warm-gray: var(--color-warm-gray);
 }
 
 .dark {
