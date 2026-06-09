@@ -3,8 +3,8 @@
 > Roadmap macro das 5 fases de desenvolvimento.
 > Este documento é a bússola estratégica — atualizar a cada fase concluída.
 
-**Data de criação:** 2026-06-07 | **Última atualização:** 2026-06-08
-**Status atual:** Fase 1 ✅ completa → entrando na Fase 2
+**Data de criação:** 2026-06-07 | **Última atualização:** 2026-06-09
+**Status atual:** Fase 2 🔄 em andamento — Missão 6.1 concluída
 **Leitura rápida:** ver [[INDEX]] para estado atual do projeto
 
 ---
@@ -66,12 +66,33 @@
 - [x] [[notes/Insights_Missao4]]
 - [x] [[notes/Product_Vision_Notes]] criado
 
-### Missão 5: Auth + Perfil de Usuário ⏳
-- [ ] Supabase Auth (email + OAuth Google)
-- [ ] Tabela `user_profiles` com respostas do onboarding
-- [ ] Salvar onboarding no banco ao finalizar
-- [ ] Link "Monte seu perfil" na landing → `/onboarding`
-- [ ] Página `/perfil` (proteção por autenticação)
+### Missão 5: PostHog + Sentry ✅
+- [x] PostHog reimplementado (região EU, taxonomia de eventos, CRM)
+- [x] Sentry v8 configurado (client + server)
+
+### Missão 6: Auth + Onboarding Etapa 2 ✅
+- [x] Supabase Auth — Magic Link operacional
+- [x] Tabela `user_profiles` com respostas do onboarding
+- [x] Callback pós-auth salva perfil no banco
+- [x] CTA duplo na landing → `/onboarding`
+
+### Missão 6.1: Funil de Quiz Segmentado + Oferta + Landing ✅
+- [x] Onboarding dinâmico por público (você / casa-família / ambos)
+- [x] Tela de oferta: comunidade + mock social animado + bônus segmentado
+- [x] Google OAuth + Magic Link + campo nome
+- [x] Pricing table pós-cadastro (4 planos com ancoragem)
+- [x] Landing page redesenhada (8 seções, paleta apetite/pastel)
+- [x] Migration Supabase: colunas segmentadas + raw_answers jsonb
+- [x] DNS melhorsabor.com.br propagado + PostHog keys na Vercel
+- [x] Visão de gamificação documentada (docs/GAMIFICATION_VISION.md)
+
+### Missão 7: Gamificação + Gateway de Pagamento ⏳ ← PRÓXIMA
+- [ ] Integrar gateway (Stripe ou Mercado Pago) nos planos
+- [ ] Modelo de dados: `user_checkins`, `user_badges`, `user_journey_phase`
+- [ ] UI: calendário mensal de check-ins (paleta mel/damasco)
+- [ ] Lógica de badges: primeiros 4 badges implementados
+- [ ] Callback redireciona para `/planos` após cadastro
+- [ ] Página `/perfil` protegida por auth (conquistas + fase)
 
 ---
 
