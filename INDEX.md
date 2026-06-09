@@ -36,7 +36,7 @@
 
 ### Governança e Estratégia
 - [[CLAUDE_CODE_MASTER_PLAN]] — roadmap macro 5 fases, **ler antes de qualquer missão nova**
-- [[CONTEXT_SYNC.md]] — briefing atual gerado pelo NotebookLM, **ler no início de cada sessão**
+- [[CONTEXT_SYNC.new]] — briefing atual gerado pelo NotebookLM, **ler no início de cada sessão**
 - [[.claude/CLAUDE.md]] — regras não-negociáveis do projeto
 
 ### Arquitetura

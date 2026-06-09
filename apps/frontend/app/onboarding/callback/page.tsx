@@ -98,8 +98,8 @@ export default function OnboardingCallbackPage() {
 
         setStatus("success");
 
-        // Redireciona para a home após 2 segundos
-        setTimeout(() => router.replace("/"), 2000);
+        // Redireciona para /planos para o usuário escolher e pagar
+        setTimeout(() => router.replace("/planos"), 2000);
       } catch (err) {
         const msg =
           err instanceof Error ? err.message : "Erro desconhecido.";

@@ -1,6 +1,6 @@
 // ⚠️ ARQUIVO GERADO AUTOMATICAMENTE — não editar manualmente
 // Gerado via: supabase gen types typescript --project-id ljboadzbqzutwwogzmbq
-// Para regenerar: npx supabase gen types typescript --project-id ljboadzbqzutwwogzmbq > types/database.types.ts
+// Última atualização: 2026-06-09 (Missão 7)
 
 export type Json =
   | string
@@ -11,13 +11,56 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instantiate createClient with right options
-  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "14.5"
   }
   public: {
     Tables: {
+      user_badges: {
+        Row: {
+          badge_id: string
+          id: string
+          unlocked_at: string
+          user_id: string
+        }
+        Insert: {
+          badge_id: string
+          id?: string
+          unlocked_at?: string
+          user_id: string
+        }
+        Update: {
+          badge_id?: string
+          id?: string
+          unlocked_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_checkins: {
+        Row: {
+          created_at: string
+          date: string
+          id: string
+          items: string[]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          date: string
+          id?: string
+          items?: string[]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          id?: string
+          items?: string[]
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_profiles: {
         Row: {
           academia: string | null
@@ -31,6 +74,8 @@ export type Database = {
           email: string | null
           id: string
           idade_range: string | null
+          mp_payment_id: string | null
+          mp_preference_id: string | null
           nivel: string | null
           objetivo: string | null
           objetivo_casa: string | null
@@ -41,6 +86,9 @@ export type Database = {
           restricoes: string[] | null
           restricoes_casa: string[] | null
           rotina_casa: string | null
+          selected_plan: string | null
+          subscribed_at: string | null
+          subscription_status: string
           tamanho_casa: string | null
           tempo_preparo: string | null
           updated_at: string
@@ -57,6 +105,8 @@ export type Database = {
           email?: string | null
           id: string
           idade_range?: string | null
+          mp_payment_id?: string | null
+          mp_preference_id?: string | null
           nivel?: string | null
           objetivo?: string | null
           objetivo_casa?: string | null
@@ -67,6 +117,9 @@ export type Database = {
           restricoes?: string[] | null
           restricoes_casa?: string[] | null
           rotina_casa?: string | null
+          selected_plan?: string | null
+          subscribed_at?: string | null
+          subscription_status?: string
           tamanho_casa?: string | null
           tempo_preparo?: string | null
           updated_at?: string
@@ -83,6 +136,8 @@ export type Database = {
           email?: string | null
           id?: string
           idade_range?: string | null
+          mp_payment_id?: string | null
+          mp_preference_id?: string | null
           nivel?: string | null
           objetivo?: string | null
           objetivo_casa?: string | null
@@ -93,6 +148,9 @@ export type Database = {
           restricoes?: string[] | null
           restricoes_casa?: string[] | null
           rotina_casa?: string | null
+          selected_plan?: string | null
+          subscribed_at?: string | null
+          subscription_status?: string
           tamanho_casa?: string | null
           tempo_preparo?: string | null
           updated_at?: string
