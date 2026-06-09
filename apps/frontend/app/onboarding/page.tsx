@@ -749,12 +749,15 @@ export default function OnboardingPage() {
               <CommunityPillar icon={<ShieldCheck className="w-5 h-5 text-tomato" />} title="Progresso real" text="Sua jornada registrada, seu histórico visível, seu avanço celebrado." />
             </motion.div>
 
-            {/* Mock dinâmico de postagem */}
+            {/* Mocks dinâmicos de postagem — dois cards lado a lado */}
             <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="mb-8">
-              <p className="text-xs uppercase tracking-widest font-semibold text-warm-gray mb-3 text-center">
+              <p className="text-xs uppercase tracking-widest font-semibold text-warm-gray mb-4 text-center">
                 Veja como funciona na prática
               </p>
-              <CommunityMockPost />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <CommunityMockPost />
+                <CommunityMockPostAchievement />
+              </div>
             </motion.div>
 
             {/* Bônus */}
@@ -909,19 +912,43 @@ function CommunityPillar({ icon, title, text }: { icon: React.ReactNode; title: 
   );
 }
 
-// Mock animado de postagem da comunidade
+// ---------------------------------------------------------------------------
+// Post 1 — prato com comentários em loop
+// ---------------------------------------------------------------------------
+const FOOD_COMMENTS = [
+  { initial: "R", name: "Rafael T.", color: "from-sage/60 to-sage", text: "Que inspiração! Eu também tô na semana 3. Mandou bem! 🙌" },
+  { initial: "C", name: "Camila O.", color: "from-apricot to-honey", text: "Adoro quinoa! Me manda a receita depois? 😍" },
+  { initial: "P", name: "Pedro A.", color: "from-peach to-apricot", text: "15 minutos?? Preciso aprender isso!" },
+  { initial: "J", name: "Juliana M.", color: "from-sage to-sage/80", text: "Minha terapeuta alimentar aprovaria essa escolha ✅" },
+];
+
 function CommunityMockPost() {
   const [liked, setLiked] = useState(false);
-  const [showComment, setShowComment] = useState(false);
+  const [commentIndex, setCommentIndex] = useState(0);
+  const [visible, setVisible] = useState(false);
 
+  // Primeiro comentário aparece após 1.5s, depois troca a cada 3s com fade
   useEffect(() => {
-    const t1 = setTimeout(() => setShowComment(true), 1800);
-    return () => clearTimeout(t1);
+    const show = setTimeout(() => setVisible(true), 1500);
+    return () => clearTimeout(show);
   }, []);
 
+  useEffect(() => {
+    if (!visible) return;
+    const interval = setInterval(() => {
+      setVisible(false);
+      setTimeout(() => {
+        setCommentIndex((i) => (i + 1) % FOOD_COMMENTS.length);
+        setVisible(true);
+      }, 350);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [visible]);
+
+  const comment = FOOD_COMMENTS[commentIndex];
+
   return (
-    <div className="bg-white rounded-2xl border border-peach shadow-sm overflow-hidden max-w-sm mx-auto">
-      {/* Header do post */}
+    <div className="bg-white rounded-2xl border border-peach shadow-sm overflow-hidden flex flex-col">
       <div className="flex items-center gap-3 px-4 pt-4 pb-3">
         <div className="w-9 h-9 rounded-full bg-gradient-to-br from-apricot to-honey flex items-center justify-center text-white font-bold text-sm flex-shrink-0">M</div>
         <div>
@@ -930,46 +957,146 @@ function CommunityMockPost() {
         </div>
       </div>
 
-      {/* Imagem mock do prato */}
-      <div className="w-full h-40 bg-gradient-to-br from-honey/40 via-apricot/30 to-peach/50 flex items-center justify-center">
+      <div className="w-full h-36 bg-gradient-to-br from-honey/40 via-apricot/30 to-peach/50 flex items-center justify-center px-4">
         <div className="text-center">
-          <Camera className="w-8 h-8 text-apricot mx-auto mb-1" />
+          <Camera className="w-7 h-7 text-apricot mx-auto mb-1" />
           <p className="text-xs text-warm-gray font-medium">Salada de quinoa com legumes</p>
           <p className="text-[10px] text-gray-400 mt-0.5">Preparei em 15 min seguindo a sugestão do app!</p>
         </div>
       </div>
 
-      {/* Reações */}
-      <div className="flex items-center gap-4 px-4 py-3 border-t border-peach/50">
+      <div className="flex items-center gap-4 px-4 py-2.5 border-t border-peach/50">
         <button onClick={() => setLiked((v) => !v)} className={`flex items-center gap-1.5 text-xs font-medium transition-colors ${liked ? "text-tomato" : "text-gray-400 hover:text-tomato"}`}>
           <Heart className={`w-4 h-4 transition-all ${liked ? "fill-tomato scale-110" : ""}`} />
           {liked ? "24" : "23"}
         </button>
         <span className="flex items-center gap-1.5 text-xs text-gray-400">
           <MessageCircle className="w-4 h-4" />
-          3 comentários
+          {FOOD_COMMENTS.length} comentários
         </span>
       </div>
 
-      {/* Comentário aparece animado */}
-      <AnimatePresence>
-        {showComment && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="px-4 pb-4"
-          >
-            <div className="flex gap-2 items-start">
-              <div className="w-7 h-7 rounded-full bg-gradient-to-br from-sage/60 to-sage flex items-center justify-center text-white font-bold text-[10px] flex-shrink-0">R</div>
-              <div className="bg-nude rounded-xl px-3 py-2">
-                <p className="text-[11px] font-semibold text-gray-700">Rafael T.</p>
-                <p className="text-xs text-gray-600 mt-0.5">Que inspiração! Eu também tô na semana 3. Mandou bem!</p>
+      {/* Comentário em loop com fade */}
+      <div className="px-4 pb-4 min-h-[56px] flex items-start">
+        <AnimatePresence mode="wait">
+          {visible && (
+            <motion.div
+              key={commentIndex}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.3 }}
+              className="flex gap-2 items-start w-full"
+            >
+              <div className={`w-7 h-7 rounded-full bg-gradient-to-br ${comment.color} flex items-center justify-center text-white font-bold text-[10px] flex-shrink-0`}>
+                {comment.initial}
               </div>
+              <div className="bg-nude rounded-xl px-3 py-2 flex-1">
+                <p className="text-[11px] font-semibold text-gray-700">{comment.name}</p>
+                <p className="text-xs text-gray-600 mt-0.5">{comment.text}</p>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Post 2 — conquista/evolução com comentários motivacionais em loop
+// ---------------------------------------------------------------------------
+const ACHIEVEMENT_COMMENTS = [
+  { initial: "A", name: "Ana Paula", color: "from-tomato/60 to-paprika/80", text: "PARABÉNS! Você é uma inspiração pra mim 💪🔥" },
+  { initial: "L", name: "Lucas F.", color: "from-sage to-sage/80", text: "Que jornada incrível! Tô começando agora e isso me motiva demais 🙏" },
+  { initial: "B", name: "Beatriz N.", color: "from-honey to-apricot", text: "Meta batida! Você prova que é possível com consistência ✨" },
+  { initial: "T", name: "Tiago R.", color: "from-apricot/70 to-peach", text: "Isso é resultado de semanas de foco e dedicação. Arrasou! 🎯" },
+];
+
+function CommunityMockPostAchievement() {
+  const [commentIndex, setCommentIndex] = useState(0);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const show = setTimeout(() => setVisible(true), 2200);
+    return () => clearTimeout(show);
+  }, []);
+
+  useEffect(() => {
+    if (!visible) return;
+    const interval = setInterval(() => {
+      setVisible(false);
+      setTimeout(() => {
+        setCommentIndex((i) => (i + 1) % ACHIEVEMENT_COMMENTS.length);
+        setVisible(true);
+      }, 350);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [visible]);
+
+  const comment = ACHIEVEMENT_COMMENTS[commentIndex];
+
+  return (
+    <div className="bg-white rounded-2xl border border-peach shadow-sm overflow-hidden flex flex-col">
+      <div className="flex items-center gap-3 px-4 pt-4 pb-3">
+        <div className="w-9 h-9 rounded-full bg-gradient-to-br from-sage to-sage/70 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">F</div>
+        <div>
+          <p className="text-sm font-semibold text-gray-900">Fernanda C.</p>
+          <p className="text-[11px] text-gray-400">Objetivo: emagrecer · Semana 12</p>
+        </div>
+      </div>
+
+      <div className="w-full h-36 bg-gradient-to-br from-sage/20 via-peach/30 to-honey/20 flex items-center justify-center px-4">
+        <div className="text-center">
+          <div className="flex items-center justify-center gap-3 mb-2">
+            <div className="text-center">
+              <p className="text-[10px] text-gray-400 uppercase tracking-wide">Início</p>
+              <p className="text-xl font-extrabold text-gray-700">78 kg</p>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            <ArrowRight className="w-5 h-5 text-tomato" />
+            <div className="text-center">
+              <p className="text-[10px] text-gray-400 uppercase tracking-wide">Agora</p>
+              <p className="text-xl font-extrabold text-tomato">68 kg</p>
+            </div>
+          </div>
+          <p className="text-xs text-warm-gray font-medium">Meta alcançada!</p>
+          <p className="text-[10px] text-gray-400 mt-0.5">12 semanas com o MelhorSabor</p>
+        </div>
+      </div>
+
+      <div className="flex items-center gap-4 px-4 py-2.5 border-t border-peach/50">
+        <span className="flex items-center gap-1.5 text-xs font-medium text-tomato">
+          <Heart className="w-4 h-4 fill-tomato" />
+          147
+        </span>
+        <span className="flex items-center gap-1.5 text-xs text-gray-400">
+          <MessageCircle className="w-4 h-4" />
+          {ACHIEVEMENT_COMMENTS.length} comentários
+        </span>
+      </div>
+
+      <div className="px-4 pb-4 min-h-[56px] flex items-start">
+        <AnimatePresence mode="wait">
+          {visible && (
+            <motion.div
+              key={commentIndex}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.3 }}
+              className="flex gap-2 items-start w-full"
+            >
+              <div className={`w-7 h-7 rounded-full bg-gradient-to-br ${comment.color} flex items-center justify-center text-white font-bold text-[10px] flex-shrink-0`}>
+                {comment.initial}
+              </div>
+              <div className="bg-nude rounded-xl px-3 py-2 flex-1">
+                <p className="text-[11px] font-semibold text-gray-700">{comment.name}</p>
+                <p className="text-xs text-gray-600 mt-0.5">{comment.text}</p>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   );
 }
