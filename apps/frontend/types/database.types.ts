@@ -18,6 +18,51 @@ export type Database = {
   }
   public: {
     Tables: {
+      user_profiles: {
+        Row: {
+          academia: string | null
+          atividade: string | null
+          biotipo: string | null
+          cozinha: string | null
+          created_at: string
+          email: string | null
+          id: string
+          idade_range: string | null
+          objetivo: string | null
+          refeicao: string | null
+          restricoes: string[] | null
+          updated_at: string
+        }
+        Insert: {
+          academia?: string | null
+          atividade?: string | null
+          biotipo?: string | null
+          cozinha?: string | null
+          created_at?: string
+          email?: string | null
+          id: string
+          idade_range?: string | null
+          objetivo?: string | null
+          refeicao?: string | null
+          restricoes?: string[] | null
+          updated_at?: string
+        }
+        Update: {
+          academia?: string | null
+          atividade?: string | null
+          biotipo?: string | null
+          cozinha?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          idade_range?: string | null
+          objetivo?: string | null
+          refeicao?: string | null
+          restricoes?: string[] | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       waitlist_emails: {
         Row: {
           created_at: string

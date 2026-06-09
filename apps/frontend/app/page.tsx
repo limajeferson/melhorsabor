@@ -1,4 +1,5 @@
-﻿import { ChefHat, Leaf, Zap, Users } from "lucide-react";
+﻿import { ChefHat, Leaf, Zap, Users, ArrowRight } from "lucide-react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
   FadeUp,
@@ -115,15 +116,28 @@ export default function HomePage() {
             Pronto para comer com inteligência?
           </h2>
           <p className="text-green-200 mb-8 text-lg">
-            Entre na lista de espera e seja um dos primeiros a experimentar.
+            Monte seu perfil gratuito e receba receitas personalizadas para você.
           </p>
-          <Button
-            size="lg"
-            className="bg-white text-[hsl(var(--primary))] hover:bg-green-50 px-10 py-6 text-base rounded-full font-semibold shadow-lg"
-            asChild
-          >
-            <a href="#waitlist">Quero entrar na lista</a>
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button
+              size="lg"
+              className="bg-white text-[hsl(var(--primary))] hover:bg-green-50 px-10 py-6 text-base rounded-full font-semibold shadow-lg"
+              asChild
+            >
+              <Link href="/onboarding">
+                Monte seu perfil gratuito
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Link>
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="border-green-300 text-white hover:bg-green-700/20 px-8 py-6 text-base rounded-full font-semibold"
+              asChild
+            >
+              <a href="#waitlist">Entrar na lista de espera</a>
+            </Button>
+          </div>
         </FadeInView>
       </section>
 
