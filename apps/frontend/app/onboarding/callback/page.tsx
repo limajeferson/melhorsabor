@@ -50,22 +50,38 @@ export default function OnboardingCallbackPage() {
           ? JSON.parse(raw)
           : {};
 
-        // Monta o payload para user_profiles
+        // Helpers para normalizar single (string) e multi (string[])
+        const str = (v: unknown) => (typeof v === "string" ? v : null);
+        const arr = (v: unknown) =>
+          Array.isArray(v) ? (v as string[]) : v ? [v as string] : [];
+
+        // Monta o payload para user_profiles (trilha pessoal + trilha casa/família)
         const profile = {
           id: finalSession.user.id,
           email: finalSession.user.email ?? null,
-          objetivo: (answers.objetivo as string) ?? null,
-          academia: (answers.academia as string) ?? null,
-          cozinha: (answers.cozinha as string) ?? null,
-          refeicao: (answers.refeicao as string) ?? null,
-          idade_range: (answers.idade_range as string) ?? null,
-          biotipo: (answers.biotipo as string) ?? null,
-          atividade: (answers.atividade as string) ?? null,
-          restricoes: Array.isArray(answers.restricoes)
-            ? answers.restricoes
-            : answers.restricoes
-            ? [answers.restricoes as string]
-            : [],
+          publico: str(answers.publico),
+          // Trilha pessoal
+          objetivo: str(answers.objetivo),
+          pratica: str(answers.pratica),
+          academia: str(answers.academia),
+          nivel: str(answers.nivel),
+          cozinha: str(answers.cozinha),
+          refeicao: str(answers.refeicao),
+          animo: str(answers.animo),
+          idade_range: str(answers.idade_range),
+          biotipo: str(answers.biotipo),
+          atividade: str(answers.atividade),
+          restricoes: arr(answers.restricoes),
+          // Trilha casa/família
+          objetivo_casa: str(answers.objetivo_casa),
+          tamanho_casa: str(answers.tamanho_casa),
+          criancas: str(answers.criancas),
+          tempo_preparo: str(answers.tempo_preparo),
+          rotina_casa: str(answers.rotina_casa),
+          restricoes_casa: arr(answers.restricoes_casa),
+          desafio_casa: str(answers.desafio_casa),
+          // Snapshot bruto (à prova de evolução do questionário)
+          raw_answers: answers,
           updated_at: new Date().toISOString(),
         };
 

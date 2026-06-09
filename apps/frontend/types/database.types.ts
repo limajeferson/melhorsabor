@@ -21,44 +21,80 @@ export type Database = {
       user_profiles: {
         Row: {
           academia: string | null
+          animo: string | null
           atividade: string | null
           biotipo: string | null
           cozinha: string | null
           created_at: string
+          criancas: string | null
+          desafio_casa: string | null
           email: string | null
           id: string
           idade_range: string | null
+          nivel: string | null
           objetivo: string | null
+          objetivo_casa: string | null
+          pratica: string | null
+          publico: string | null
+          raw_answers: Json | null
           refeicao: string | null
           restricoes: string[] | null
+          restricoes_casa: string[] | null
+          rotina_casa: string | null
+          tamanho_casa: string | null
+          tempo_preparo: string | null
           updated_at: string
         }
         Insert: {
           academia?: string | null
+          animo?: string | null
           atividade?: string | null
           biotipo?: string | null
           cozinha?: string | null
           created_at?: string
+          criancas?: string | null
+          desafio_casa?: string | null
           email?: string | null
           id: string
           idade_range?: string | null
+          nivel?: string | null
           objetivo?: string | null
+          objetivo_casa?: string | null
+          pratica?: string | null
+          publico?: string | null
+          raw_answers?: Json | null
           refeicao?: string | null
           restricoes?: string[] | null
+          restricoes_casa?: string[] | null
+          rotina_casa?: string | null
+          tamanho_casa?: string | null
+          tempo_preparo?: string | null
           updated_at?: string
         }
         Update: {
           academia?: string | null
+          animo?: string | null
           atividade?: string | null
           biotipo?: string | null
           cozinha?: string | null
           created_at?: string
+          criancas?: string | null
+          desafio_casa?: string | null
           email?: string | null
           id?: string
           idade_range?: string | null
+          nivel?: string | null
           objetivo?: string | null
+          objetivo_casa?: string | null
+          pratica?: string | null
+          publico?: string | null
+          raw_answers?: Json | null
           refeicao?: string | null
           restricoes?: string[] | null
+          restricoes_casa?: string[] | null
+          rotina_casa?: string | null
+          tamanho_casa?: string | null
+          tempo_preparo?: string | null
           updated_at?: string
         }
         Relationships: []

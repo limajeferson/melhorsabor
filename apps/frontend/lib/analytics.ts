@@ -10,7 +10,11 @@ import posthog from "posthog-js";
 export const AnalyticsEvent = {
   WaitlistJoined: "waitlist_joined",
   OnboardingStarted: "onboarding_started",
+  OnboardingAudienceSelected: "onboarding_audience_selected",
   OnboardingStepAnswered: "onboarding_step_answered",
+  OnboardingMedicalNoticeShown: "onboarding_medical_notice_shown",
+  OnboardingOfferViewed: "onboarding_offer_viewed",
+  OnboardingPlanSelected: "onboarding_plan_selected",
   OnboardingCompleted: "onboarding_completed",
 } as const;
 

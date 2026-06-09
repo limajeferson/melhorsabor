@@ -12,6 +12,20 @@
   --brand-orange: #e76f51;
   --brand-orange-light: #f4a261;
 
+  /* ----------------------------------------------------------------
+     Paleta "Apetite + Pastel" (psicologia das cores)
+     Tons quentes (vermelho/laranja/mel) estimulam fome e apetite;
+     pastéis cremosos dão leveza e acolhimento; verde-sálvia mantém
+     o eixo saúde/frescor. Usada em landing e telas de oferta.
+     ---------------------------------------------------------------- */
+  --color-cream: #fffaf3;     /* fundo pastel quente */
+  --color-peach: #ffe3d3;     /* pêssego suave */
+  --color-apricot: #fcbf86;   /* damasco */
+  --color-honey: #ffd27d;     /* mel / amarelo apetite */
+  --color-tomato: #e8553b;    /* vermelho-tomate (apetite, CTA) */
+  --color-paprika: #c9412b;   /* páprica (hover/contraste) */
+  --color-sage: #80b49b;      /* verde-sálvia pastel (saúde) */
+
   /* shadcn/ui CSS Variables */
   --background: 0 0% 100%;
   --foreground: 20 14.3% 4.1%;
@@ -44,6 +58,15 @@
   --color-border: hsl(var(--border));
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* Paleta apetite/pastel exposta como utilitários (bg-cream, text-tomato, …) */
+  --color-cream: var(--color-cream);
+  --color-peach: var(--color-peach);
+  --color-apricot: var(--color-apricot);
+  --color-honey: var(--color-honey);
+  --color-tomato: var(--color-tomato);
+  --color-paprika: var(--color-paprika);
+  --color-sage: var(--color-sage);
 }
 
 .dark {
