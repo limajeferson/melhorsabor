@@ -7,7 +7,8 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/api/", "/_next/"],
+      // Páginas privadas/transacionais não devem ser indexadas
+      disallow: ["/api/", "/_next/", "/perfil", "/planos", "/onboarding/callback"],
     },
     sitemap: `${APP_URL}/sitemap.xml`,
   };

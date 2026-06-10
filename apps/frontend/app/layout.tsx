@@ -26,6 +26,7 @@ export const metadata: Metadata = {
   authors: [{ name: "MelhorSabor" }],
   creator: "MelhorSabor",
   metadataBase: new URL(APP_URL),
+  // Imagens OG/Twitter vêm da convenção app/opengraph-image.tsx
   openGraph: {
     type: "website",
     locale: "pt_BR",
@@ -34,20 +35,11 @@ export const metadata: Metadata = {
     title: "MelhorSabor — O alimento é o código-fonte",
     description:
       "Receitas com IA para potencializar sua saúde e performance humana.",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "MelhorSabor",
-      },
-    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "MelhorSabor",
     description: "Receitas com IA para potencializar sua performance.",
-    images: ["/og-image.png"],
   },
   robots: {
     index: true,
