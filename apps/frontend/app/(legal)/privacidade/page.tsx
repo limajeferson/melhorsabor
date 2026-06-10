@@ -139,7 +139,7 @@ export default function PrivacidadePage() {
           <a href="mailto:privacidade@melhorsabor.com.br">
             privacidade@melhorsabor.com.br
           </a>{" "}
-          com o assunto <em>"Direitos LGPD"</em>. Responderemos em até 15 dias
+          com o assunto <em>&ldquo;Direitos LGPD&rdquo;</em>. Responderemos em até 15 dias
           corridos.
         </p>
       </Section>
