@@ -1,17 +1,32 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/types/database.types";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+let browserClient: SupabaseClient<Database> | null = null;
 
-// Client-side (browser) — usa a anon key pública
-export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
-
-// Server-side — usa a service role key (apenas em Server Actions / API Routes)
-export function createServerClient(): SupabaseClient<Database> {
-  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!serviceKey) throw new Error("SUPABASE_SERVICE_ROLE_KEY não configurada");
-  return createClient<Database>(supabaseUrl, serviceKey, {
-    auth: { persistSession: false },
-  });
+function getClient(): SupabaseClient<Database> {
+  if (!browserClient) {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    if (!url || !anonKey) {
+      throw new Error(
+        "NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY não configuradas"
+      );
+    }
+    browserClient = createClient<Database>(url, anonKey);
+  }
+  return browserClient;
 }
+
+// Client-side (browser) — usa a anon key pública.
+// Proxy com init lazy: o client só é criado no primeiro uso real, nunca na
+// importação do módulo — senão o build (prerender) quebra quando o env não
+// está disponível.
+export const supabase = new Proxy({} as SupabaseClient<Database>, {
+  get(_target, prop) {
+    const client = getClient() as unknown as Record<string | symbol, unknown>;
+    const value = client[prop];
+    return typeof value === "function"
+      ? (value as (...args: unknown[]) => unknown).bind(client)
+      : value;
+  },
+});
