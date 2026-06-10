@@ -7,6 +7,7 @@
 
 import type { Metadata } from "next";
 import { ScrollStory } from "@/components/landing/scroll-story";
+import { EbookSection } from "@/components/landing/ebook-section";
 import { SiteFooter } from "@/components/landing/site-footer";
 
 export const metadata: Metadata = {
@@ -20,6 +21,7 @@ export default function HomePage() {
     <main className="flex flex-col min-h-screen bg-cream overflow-x-clip">
       <h1 className="sr-only">MelhorSabor</h1>
       <ScrollStory />
+      <EbookSection />
       <SiteFooter />
     </main>
   );

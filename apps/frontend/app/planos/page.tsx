@@ -86,7 +86,11 @@ function PlanosContent() {
 
   // Verifica sessão
   useEffect(() => {
+    // Modo preview (desenvolvimento): ?preview=1 exibe a UI sem autenticação real
+    const isPreview = typeof window !== "undefined" && new URLSearchParams(window.location.search).get("preview") === "1" && process.env.NODE_ENV === "development";
+
     supabase.auth.getSession().then(async ({ data: { session } }) => {
+      if (isPreview) { setSessionReady(true); return; }
       if (!session) {
         router.replace("/onboarding");
         return;
