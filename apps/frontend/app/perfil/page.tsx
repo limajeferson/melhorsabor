@@ -101,6 +101,11 @@ function formatMonthLabel(year: number, month: number): string {
   return new Date(year, month, 1).toLocaleDateString("pt-BR", { month: "long", year: "numeric" });
 }
 
+/** Data local "YYYY-MM-DD" — toISOString() usaria UTC e viraria o dia às 21h no Brasil. */
+function localDateString(d: Date = new Date()): string {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+
 // ---------------------------------------------------------------------------
 // Componente: Calendário de check-ins
 // ---------------------------------------------------------------------------
@@ -387,7 +392,7 @@ export default function PerfilPage() {
   const [badges, setBadges] = useState<Badge[]>([]);
   const [displayName, setDisplayName] = useState("");
 
-  const today = new Date().toISOString().split("T")[0];
+  const today = localDateString();
 
   const fetchData = useCallback(async (userId: string) => {
     const [checkinsRes, badgesRes] = await Promise.all([

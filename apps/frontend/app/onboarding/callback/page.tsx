@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { ChefHat, Loader2, AlertCircle } from "lucide-react";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
+import { identify } from "@/lib/analytics";
 
 type Status = "loading" | "saving" | "success" | "error";
 
@@ -41,6 +42,9 @@ export default function OnboardingCallbackPage() {
         if (!finalSession) {
           throw new Error("Sessão inválida.");
         }
+
+        // Vincula eventos do PostHog à pessoa (funil completo até pagamento)
+        identify(finalSession.user.id, { email: finalSession.user.email });
 
         setStatus("saving");
 
@@ -112,19 +116,19 @@ export default function OnboardingCallbackPage() {
   }, [router]);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 bg-gradient-to-b from-white via-green-50/60 to-white">
+    <div className="min-h-screen flex flex-col items-center justify-center px-4 bg-gradient-to-b from-cream via-peach/30 to-cream">
       <Link
         href="/"
-        className="flex items-center gap-2 text-green-800 font-semibold text-sm mb-10"
+        className="flex items-center gap-2 text-gray-800 font-semibold text-sm mb-10"
       >
-        <ChefHat className="w-5 h-5" />
+        <ChefHat className="w-5 h-5 text-tomato" />
         MelhorSabor
       </Link>
 
       <div className="text-center max-w-sm">
         {(status === "loading" || status === "saving") && (
           <>
-            <Loader2 className="w-10 h-10 text-green-600 animate-spin mx-auto mb-5" />
+            <Loader2 className="w-10 h-10 text-tomato animate-spin mx-auto mb-5" />
             <h2 className="text-xl font-bold text-gray-900 mb-2">
               {status === "loading" ? "Verificando acesso…" : "Salvando seu perfil…"}
             </h2>
@@ -153,7 +157,7 @@ export default function OnboardingCallbackPage() {
             <p className="text-gray-500 text-sm mb-5">{errorMsg}</p>
             <Link
               href="/onboarding"
-              className="inline-block bg-green-700 hover:bg-green-800 text-white text-sm px-6 py-3 rounded-full font-semibold transition"
+              className="inline-block bg-tomato hover:bg-paprika text-white text-sm px-6 py-3 rounded-full font-semibold transition"
             >
               Tentar novamente
             </Link>

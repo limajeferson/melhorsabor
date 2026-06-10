@@ -21,14 +21,7 @@ import {
 import Link from "next/link";
 import { AnalyticsEvent, track } from "@/lib/analytics";
 import { supabase } from "@/lib/supabase";
-import {
-  PLANS,
-  type Plan,
-  brl,
-  monthlyEquivalent,
-  discountPercent,
-  deriveBonus,
-} from "@/lib/offer";
+import { deriveBonus } from "@/lib/offer";
 
 // ---------------------------------------------------------------------------
 // Tipos
@@ -332,9 +325,8 @@ export default function OnboardingPage() {
   const [answers, setAnswers] = useState<Answers>({});
   const [direction, setDirection] = useState(1);
 
-  // Fases: steps → offer → auth → plans → email-sent
-  const [phase, setPhase] = useState<"steps" | "offer" | "auth" | "plans" | "email-sent">("steps");
-  const [selectedPlan, setSelectedPlan] = useState<Plan["id"]>("anual");
+  // Fases: steps → offer → auth → email-sent (planos ficam em /planos pós-login)
+  const [phase, setPhase] = useState<"steps" | "offer" | "auth" | "email-sent">("steps");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [authLoading, setAuthLoading] = useState(false);
@@ -386,7 +378,6 @@ export default function OnboardingPage() {
     try {
       const saved = { ...answers };
       if (name) saved._name = name;
-      saved.selected_plan = selectedPlan;
       localStorage.setItem("onboarding_answers", JSON.stringify(saved));
     } catch { /* silently fail */ }
   }
@@ -447,11 +438,6 @@ export default function OnboardingPage() {
     setPhase("email-sent");
   }
 
-  function choosePlan(planId: Plan["id"]) {
-    setSelectedPlan(planId);
-    track(AnalyticsEvent.OnboardingPlanSelected, { plan: planId });
-  }
-
   // ---------------------------------------------------------------------------
   // Render: Email enviado
   // ---------------------------------------------------------------------------
@@ -474,132 +460,6 @@ export default function OnboardingPage() {
           </p>
           <p className="text-xs text-gray-400 leading-relaxed">Não encontrou? Verifique a pasta de spam.</p>
         </motion.div>
-      </div>
-    );
-  }
-
-  // ---------------------------------------------------------------------------
-  // Render: Planos (após cadastro)
-  // ---------------------------------------------------------------------------
-  if (phase === "plans") {
-    return (
-      <div className="min-h-screen flex flex-col bg-gradient-to-b from-cream via-nude/60 to-cream">
-        <header className="flex items-center justify-between px-6 py-5 max-w-3xl mx-auto w-full">
-          <Link href="/" className="flex items-center gap-2 text-gray-800 font-semibold text-sm">
-            <ChefHat className="w-5 h-5 text-tomato" />
-            MelhorSabor
-          </Link>
-        </header>
-        <div className="w-full bg-gray-100 h-1"><div className="h-1 bg-tomato w-full" /></div>
-
-        <main className="flex-1 px-4 py-10">
-          <div className="w-full max-w-3xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="text-center mb-8"
-            >
-              <span className="inline-flex items-center gap-2 mb-4 px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wide bg-white text-tomato border border-peach shadow-sm">
-                <Sparkles className="w-3.5 h-3.5" />
-                Bem-vindo à comunidade!
-              </span>
-              <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-3 leading-tight">
-                Escolha como você quer continuar
-              </h1>
-              <p className="text-gray-500 text-sm max-w-lg mx-auto">
-                Todos os planos incluem acesso à comunidade e ao seu bônus personalizado enviado por e-mail após a confirmação.
-              </p>
-            </motion.div>
-
-            {/* Bônus */}
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="flex items-start gap-4 p-5 mb-8 rounded-2xl bg-white border-2 border-dashed border-apricot"
-            >
-              <div className="w-10 h-10 rounded-xl bg-honey/40 flex items-center justify-center flex-shrink-0">
-                <Gift className="w-5 h-5 text-paprika" />
-              </div>
-              <div>
-                <p className="text-[11px] uppercase tracking-widest font-bold text-paprika mb-0.5">Bônus de entrada · grátis em qualquer plano</p>
-                <h3 className="font-bold text-gray-900 text-sm">{bonus.title}</h3>
-                <p className="text-gray-500 text-xs mt-0.5">{bonus.subtitle}</p>
-              </div>
-            </motion.div>
-
-            {/* Tabela de preços */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-              {PLANS.map((plan, i) => {
-                const sel = selectedPlan === plan.id;
-                const desc = discountPercent(plan);
-                const mensal = monthlyEquivalent(plan);
-                return (
-                  <motion.button
-                    key={plan.id}
-                    type="button"
-                    onClick={() => choosePlan(plan.id)}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.1 + i * 0.07 }}
-                    className={`relative text-left rounded-2xl border-2 p-5 transition-all duration-200 ${
-                      sel ? "border-tomato bg-white shadow-lg scale-[1.02]" : "border-gray-200 bg-white/70 hover:border-apricot hover:bg-white"
-                    } ${plan.highlight ? "sm:-mt-2" : ""}`}
-                  >
-                    {plan.badge && (
-                      <span className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-tomato text-white shadow">
-                        {plan.badge}
-                      </span>
-                    )}
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="font-bold text-gray-900">{plan.name}</span>
-                      <span className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${sel ? "border-tomato bg-tomato" : "border-gray-300"}`}>
-                        {sel && <Check className="w-3 h-3 text-white" />}
-                      </span>
-                    </div>
-                    <div className="mb-1">
-                      <span className="text-2xl font-extrabold text-gray-900">{brl(plan.price)}</span>
-                      {plan.months > 1 && <span className="text-xs text-gray-400"> /{plan.months} meses</span>}
-                    </div>
-                    <p className="text-xs text-gray-500">
-                      Equivale a <strong className="text-gray-700">{brl(mensal)}</strong>/mês
-                    </p>
-                    {desc > 0 ? (
-                      <span className="inline-block mt-3 px-2 py-0.5 rounded-md text-[11px] font-bold bg-sage/20 text-green-800">
-                        Economize {desc}%
-                      </span>
-                    ) : (
-                      <span className="inline-block mt-3 px-2 py-0.5 rounded-md text-[11px] font-medium text-gray-400">Plano base</span>
-                    )}
-                    <p className="mt-2 text-[11px] text-gray-400 flex items-center gap-1">
-                      <Gift className="w-3 h-3 text-paprika" />
-                      Bônus incluso
-                    </p>
-                  </motion.button>
-                );
-              })}
-            </div>
-
-            <div className="max-w-md mx-auto">
-              <button
-                onClick={() => {
-                  track(AnalyticsEvent.OnboardingPlanSelected, { plan: selectedPlan, confirmed: true });
-                  saveAnswers();
-                  // TODO: integrar gateway de pagamento
-                  alert(`Plano ${selectedPlan} selecionado! Integração de pagamento em breve.`);
-                }}
-                className="w-full flex items-center justify-center gap-2 bg-tomato hover:bg-paprika text-white px-6 py-4 rounded-full text-base font-bold shadow-md shadow-tomato/20 transition"
-              >
-                Assinar plano {selectedPlan}
-                <ArrowRight className="w-5 h-5" />
-              </button>
-              <p className="text-center text-xs text-gray-400 mt-4">
-                Após o pagamento confirmado, seu bônus chega por e-mail. Cancele quando quiser.
-              </p>
-            </div>
-          </div>
-        </main>
       </div>
     );
   }
