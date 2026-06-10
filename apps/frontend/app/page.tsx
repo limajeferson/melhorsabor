@@ -1,22 +1,24 @@
-import { Hero } from "@/components/landing/hero";
-import { HowItWorks } from "@/components/landing/how-it-works";
-import { Audiences } from "@/components/landing/audiences";
-import { Community } from "@/components/landing/community";
-import { Features } from "@/components/landing/features";
-import { WaitlistSection } from "@/components/landing/waitlist-section";
-import { FinalCta } from "@/components/landing/final-cta";
+/**
+ * Home — MelhorSabor
+ *
+ * Server Component (sem "use client") para SEO maximo.
+ * As animacoes scroll-telling ficam em <ScrollStory> (Client Component).
+ */
+
+import type { Metadata } from "next";
+import { ScrollStory } from "@/components/landing/scroll-story";
 import { SiteFooter } from "@/components/landing/site-footer";
+
+export const metadata: Metadata = {
+  title: "MelhorSabor",
+  description: "Diagnostico gratuito com IA, receitas personalizadas e comunidade de apoio.",
+};
 
 export default function HomePage() {
   return (
-    <main className="flex flex-col min-h-screen">
-      <Hero />
-      <HowItWorks />
-      <Audiences />
-      <Community />
-      <Features />
-      <WaitlistSection />
-      <FinalCta />
+    <main className="flex flex-col min-h-screen bg-cream overflow-x-hidden">
+      <h1 className="sr-only">MelhorSabor</h1>
+      <ScrollStory />
       <SiteFooter />
     </main>
   );
