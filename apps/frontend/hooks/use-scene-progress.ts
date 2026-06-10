@@ -29,22 +29,36 @@ export function useSceneProgress(
  * @param globalProgress  MotionValue global do useScroll
  * @param start           início da cena (ex: 0.25)
  * @param end             fim da cena (ex: 0.50)
- * @param fadeRatio       quanto do intervalo é gasto em fade (padrão: 0.12 = 12%)
+ * @param options.fadeRatio  quanto do intervalo é gasto em fade (padrão: 0.12 = 12%)
+ * @param options.fadeIn     false para a cena já nascer visível (primeira cena)
+ * @param options.fadeOut    false para a cena permanecer visível no fim (última cena)
  */
 export function useSceneOpacity(
   globalProgress: MotionValue<number>,
   start: number,
   end: number,
-  fadeRatio = 0.12
+  options: { fadeRatio?: number; fadeIn?: boolean; fadeOut?: boolean } = {}
 ): MotionValue<number> {
+  const { fadeRatio = 0.12, fadeIn = true, fadeOut = true } = options;
   const span = end - start;
-  const fadeIn = start + span * fadeRatio;
-  const fadeOut = end - span * fadeRatio;
+  const fadeInEnd = start + span * fadeRatio;
+  const fadeOutStart = end - span * fadeRatio;
 
-  return useTransform(
-    globalProgress,
-    [start, fadeIn, fadeOut, end],
-    [0, 1, 1, 0],
-    { clamp: true }
-  );
+  const input: number[] = [];
+  const output: number[] = [];
+
+  input.push(start);
+  output.push(fadeIn ? 0 : 1);
+  if (fadeIn) {
+    input.push(fadeInEnd);
+    output.push(1);
+  }
+  if (fadeOut) {
+    input.push(fadeOutStart);
+    output.push(1);
+  }
+  input.push(end);
+  output.push(fadeOut ? 0 : 1);
+
+  return useTransform(globalProgress, input, output, { clamp: true });
 }

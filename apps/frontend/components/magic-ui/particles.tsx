@@ -2,14 +2,25 @@
 
 /**
  * Particles — Magic UI inline
- * Fundo de partículas flutuantes. Posições geradas no cliente via useEffect
- * para evitar mismatch de hidratação.
+ * Fundo de partículas flutuantes. Posições vêm de um PRNG semeado para que
+ * servidor e cliente gerem o mesmo layout (sem mismatch de hidratação).
  * Inspirado em: https://magicui.design/docs/components/particles
  */
 
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+
+// mulberry32 — PRNG determinístico e barato
+function mulberry32(seed: number) {
+  return () => {
+    seed |= 0;
+    seed = (seed + 0x6d2b79f5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
 
 interface Particle {
   id: number;
@@ -36,19 +47,16 @@ export function Particles({
   opacity = 0.4,
   className,
 }: ParticlesProps) {
-  const [particles, setParticles] = useState<Particle[]>([]);
-
-  // Gera partículas apenas no cliente para evitar hydration mismatch
-  useEffect(() => {
-    const generated: Particle[] = Array.from({ length: count }, (_, i) => ({
+  const particles = useMemo<Particle[]>(() => {
+    const rand = mulberry32(count * 9301 + 49297);
+    return Array.from({ length: count }, (_, i) => ({
       id: i,
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      size: Math.random() * 4 + 2, // 2–6px
-      duration: Math.random() * 4 + 3, // 3–7s
-      delay: Math.random() * 3, // 0–3s
+      x: rand() * 100,
+      y: rand() * 100,
+      size: rand() * 4 + 2, // 2–6px
+      duration: rand() * 4 + 3, // 3–7s
+      delay: rand() * 3, // 0–3s
     }));
-    setParticles(generated);
   }, [count]);
 
   return (

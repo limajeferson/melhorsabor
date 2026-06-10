@@ -10,8 +10,6 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 interface BorderBeamProps {
-  /** Largura da faixa em px. Padrao: 120 */
-  size?: number;
   /** Duracao de uma volta em segundos. Padrao: 3 */
   duration?: number;
   /** Cor inicial do gradiente */
@@ -22,7 +20,6 @@ interface BorderBeamProps {
 }
 
 export function BorderBeam({
-  size = 120,
   duration = 3,
   colorFrom = "#f47b3a",
   colorTo = "#ffd27d",

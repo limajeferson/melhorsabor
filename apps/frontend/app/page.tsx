@@ -16,7 +16,8 @@ export const metadata: Metadata = {
 
 export default function HomePage() {
   return (
-    <main className="flex flex-col min-h-screen bg-cream overflow-x-hidden">
+    // overflow-x-clip (e não hidden): hidden cria scroll container e quebra o position:sticky do scroll-telling
+    <main className="flex flex-col min-h-screen bg-cream overflow-x-clip">
       <h1 className="sr-only">MelhorSabor</h1>
       <ScrollStory />
       <SiteFooter />

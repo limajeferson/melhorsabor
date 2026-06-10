@@ -39,7 +39,6 @@ import {
   ChefHat,
   Zap,
 } from "lucide-react";
-import Link from "next/link";
 import { AnimatedGradientText } from "@/components/magic-ui/animated-gradient-text";
 import { ShimmerButton } from "@/components/magic-ui/shimmer-button";
 import { NumberTicker } from "@/components/magic-ui/number-ticker";
@@ -112,10 +111,18 @@ export function ScrollStory() {
   const scene4 = useSceneProgress(progress, 0.75, 1.0);
 
   // ── Opacidades (envelope fade-in/out por cena) ────────────────────────────
-  const opacity1 = useSceneOpacity(progress, 0.0, 0.25);
+  // Cena 1 nasce visível (sem fade-in: é a primeira dobra da página);
+  // Cena 4 permanece visível no fim (sem fade-out: emenda com o footer).
+  const opacity1 = useSceneOpacity(progress, 0.0, 0.25, { fadeIn: false });
   const opacity2 = useSceneOpacity(progress, 0.25, 0.5);
   const opacity3 = useSceneOpacity(progress, 0.5, 0.75);
-  const opacity4 = useSceneOpacity(progress, 0.75, 1.0);
+  const opacity4 = useSceneOpacity(progress, 0.75, 1.0, { fadeOut: false });
+
+  // Cenas invisíveis não podem capturar cliques (ficam empilhadas em absolute)
+  const pointer1 = useTransform(opacity1, (v) => (v > 0.5 ? "auto" : "none"));
+  const pointer2 = useTransform(opacity2, (v) => (v > 0.5 ? "auto" : "none"));
+  const pointer3 = useTransform(opacity3, (v) => (v > 0.5 ? "auto" : "none"));
+  const pointer4 = useTransform(opacity4, (v) => (v > 0.5 ? "auto" : "none"));
 
   // ── Cena 1: atletas saem para as bordas ───────────────────────────────────
   const athleteLeftX  = useTransform(scene1, [0, 1], ["0vw", "-50vw"]);
@@ -167,7 +174,7 @@ export function ScrollStory() {
               CENA 1 — Hero
           ══════════════════════════════════════════════════════════════ */}
           <motion.div
-            style={{ opacity: opacity1 }}
+            style={{ opacity: opacity1, pointerEvents: pointer1 }}
             className="absolute inset-0 flex flex-col items-center justify-center px-4"
             aria-hidden={false}
           >
@@ -228,7 +235,7 @@ export function ScrollStory() {
                 O alimento é o{" "}
                 <AnimatedGradientText className="text-4xl md:text-6xl font-extrabold">
                   código-fonte
-                </AnimatedGradientText>
+                </AnimatedGradientText>{" "}
                 <br className="hidden sm:block" />
                 da sua performance.
               </motion.h2>
@@ -292,7 +299,7 @@ export function ScrollStory() {
               CENA 2 — Troca do Prato
           ══════════════════════════════════════════════════════════════ */}
           <motion.div
-            style={{ opacity: opacity2 }}
+            style={{ opacity: opacity2, pointerEvents: pointer2 }}
             className="absolute inset-0 flex flex-col items-center justify-center px-4 gap-10"
           >
             <motion.div style={{ y: scene2Title }}>
@@ -365,7 +372,7 @@ export function ScrollStory() {
               CENA 3 — Comunidade
           ══════════════════════════════════════════════════════════════ */}
           <motion.div
-            style={{ opacity: opacity3 }}
+            style={{ opacity: opacity3, pointerEvents: pointer3 }}
             className="absolute inset-0 flex flex-col items-center justify-center px-4 gap-6"
           >
             <motion.div
@@ -419,7 +426,7 @@ export function ScrollStory() {
               CENA 4 — Gamificação + CTA
           ══════════════════════════════════════════════════════════════ */}
           <motion.div
-            style={{ opacity: opacity4 }}
+            style={{ opacity: opacity4, pointerEvents: pointer4 }}
             className="absolute inset-0 flex flex-col items-center justify-center px-4 gap-8 overflow-hidden"
           >
             <Particles count={20} color="#ffd27d" opacity={0.35} />
