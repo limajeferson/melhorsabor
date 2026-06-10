@@ -13,49 +13,76 @@
  *  4. Retorno do MP: URL params ?status=approved|rejected|pending → trata resultado
  */
 
-import { useEffect, useState, useCallback } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChefHat, Check, Gift, Sparkles, Loader2, ArrowRight, ShieldCheck, AlertCircle } from "lucide-react";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
+import { AnalyticsEvent, track } from "@/lib/analytics";
 import { PLANS, type Plan, brl, monthlyEquivalent, discountPercent, deriveBonus } from "@/lib/offer";
 import type { User } from "@supabase/supabase-js";
 
 type CheckoutStatus = "idle" | "loading" | "redirecting" | "error";
 type PaymentStatus = "none" | "approved" | "rejected" | "pending" | "sandbox";
 
+// useSearchParams exige um boundary de Suspense no App Router — sem ele o
+// build falha ao prerenderizar a página.
 export default function PlanosPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-cream to-peach/30">
+          <Loader2 className="w-8 h-8 text-tomato animate-spin" />
+        </div>
+      }
+    >
+      <PlanosContent />
+    </Suspense>
+  );
+}
+
+function PlanosContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const [user, setUser] = useState<User | null>(null);
   const [sessionReady, setSessionReady] = useState(false);
-  const [selectedPlan, setSelectedPlan] = useState<Plan["id"]>("anual");
+
+  // Estado inicial derivado da URL de retorno do MP (back_urls) — lazy
+  // initializer em vez de effect: este componente só renderiza no client
+  // (Suspense + useSearchParams), então os params já estão disponíveis.
+  const [selectedPlan, setSelectedPlan] = useState<Plan["id"]>(() => {
+    const plan = searchParams.get("plan");
+    return plan && PLANS.some((p) => p.id === plan) ? (plan as Plan["id"]) : "anual";
+  });
+  const [paymentStatus, setPaymentStatus] = useState<PaymentStatus>(() => {
+    const status = searchParams.get("status");
+    return status === "approved" || status === "rejected" || status === "pending" || status === "sandbox"
+      ? status
+      : "none";
+  });
   const [checkoutStatus, setCheckoutStatus] = useState<CheckoutStatus>("idle");
   const [checkoutError, setCheckoutError] = useState("");
-  const [paymentStatus, setPaymentStatus] = useState<PaymentStatus>("none");
-  const [answers, setAnswers] = useState<Record<string, string | string[]>>({});
 
-  // Lê status de retorno do MP (back_urls)
-  useEffect(() => {
-    const status = searchParams.get("status") as PaymentStatus | null;
-    const plan = searchParams.get("plan");
-    if (status && status !== "none") {
-      setPaymentStatus(status);
-      if (plan && PLANS.find((p) => p.id === plan)) {
-        setSelectedPlan(plan as Plan["id"]);
-      }
-    }
-  }, [searchParams]);
-
-  // Recupera answers do localStorage para o bônus personalizado
-  useEffect(() => {
+  // Answers do onboarding para o bônus personalizado (somente leitura)
+  const [answers] = useState<Record<string, string | string[]>>(() => {
+    if (typeof window === "undefined") return {};
     try {
       const raw = localStorage.getItem("onboarding_answers");
-      if (raw) setAnswers(JSON.parse(raw));
-    } catch { /* silently fail */ }
-  }, []);
+      return raw ? (JSON.parse(raw) as Record<string, string | string[]>) : {};
+    } catch {
+      return {};
+    }
+  });
+
+  // Tracking do resultado do pagamento (sincronização com sistema externo)
+  useEffect(() => {
+    if (paymentStatus === "approved") track(AnalyticsEvent.PaymentApproved, { plan: selectedPlan });
+    if (paymentStatus === "rejected") track(AnalyticsEvent.PaymentRejected, { plan: selectedPlan });
+    if (paymentStatus === "pending") track(AnalyticsEvent.PaymentPending, { plan: selectedPlan });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [paymentStatus]);
 
   // Verifica sessão
   useEffect(() => {
@@ -78,41 +105,32 @@ export default function PlanosPage() {
         return;
       }
 
+      track(AnalyticsEvent.PlansViewed);
       setSessionReady(true);
     });
   }, [router]);
 
-  const handlePaymentApproved = useCallback(async (paymentId: string | null) => {
-    if (!user) return;
-    // Atualiza perfil via client (webhook fará o mesmo, mas é bom ter confirmação imediata)
-    await supabase.from("user_profiles").update({
-      subscription_status: "active",
-      selected_plan: selectedPlan,
-      ...(paymentId ? { mp_payment_id: paymentId } : {}),
-      subscribed_at: new Date().toISOString(),
-    }).eq("id", user.id);
-  }, [user, selectedPlan]);
-
-  useEffect(() => {
-    if (paymentStatus === "approved") {
-      const paymentId = searchParams.get("payment_id");
-      handlePaymentApproved(paymentId);
-    }
-  }, [paymentStatus, searchParams, handlePaymentApproved]);
+  // A ativação da assinatura é feita exclusivamente pelo webhook do MP
+  // (server-side). O client nunca grava subscription_status.
 
   async function handleCheckout() {
     if (!user) return;
     setCheckoutStatus("loading");
     setCheckoutError("");
+    track(AnalyticsEvent.CheckoutStarted, { plan: selectedPlan });
     try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        router.replace("/onboarding");
+        return;
+      }
       const res = await fetch("/api/checkout", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          planId: selectedPlan,
-          userId: user.id,
-          userEmail: user.email ?? "",
-        }),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify({ planId: selectedPlan }),
       });
       const data = (await res.json()) as { init_point?: string; sandbox?: boolean; error?: string };
       if (!res.ok || data.error) {
@@ -162,7 +180,7 @@ export default function PlanosPage() {
           <p className="text-gray-500 text-sm mb-8 leading-relaxed">
             {paymentStatus === "sandbox"
               ? "O token do Mercado Pago ainda não está configurado. Configure MERCADOPAGO_ACCESS_TOKEN na Vercel para ir a produção."
-              : `Seu plano ${selectedPlan} está ativo. Bem-vindo à comunidade MelhorSabor!`}
+              : `Pagamento aprovado! Seu plano ${selectedPlan} será ativado em instantes. Bem-vindo à comunidade MelhorSabor!`}
           </p>
           <Link
             href="/perfil"

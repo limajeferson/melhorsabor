@@ -4,14 +4,18 @@
  * Cria uma preferência de pagamento no Mercado Pago (Checkout Pro) e retorna
  * a URL de redirecionamento (init_point) para o browser.
  *
- * Body: { planId: string; userId: string; userEmail: string }
+ * Auth: header "Authorization: Bearer <supabase access token>" — o usuário e
+ * o e-mail são derivados do token validado, nunca do body (evita criar
+ * checkout em nome de outro usuário).
+ *
+ * Body: { planId: string }
  * Response: { init_point: string } | { error: string }
  */
 
 import { NextRequest, NextResponse } from "next/server";
-import { createServerClient } from "@/lib/supabase";
+import { createServerClient, getUserFromToken } from "@/lib/supabase-server";
 
-// Mapeamento de preços por planId (em centavos → R$)
+// Mapeamento de preços por planId (em R$) — fonte da verdade no servidor
 const PLAN_PRICES: Record<string, { title: string; price: number; months: number }> = {
   mensal:      { title: "MelhorSabor Mensal",      price: 47,  months: 1  },
   trimestral:  { title: "MelhorSabor Trimestral",  price: 139, months: 3  },
@@ -21,16 +25,19 @@ const PLAN_PRICES: Record<string, { title: string; price: number; months: number
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json() as {
-      planId: string;
-      userId: string;
-      userEmail: string;
-    };
-    const { planId, userId, userEmail } = body;
-
-    if (!planId || !userId || !userEmail) {
-      return NextResponse.json({ error: "Dados incompletos." }, { status: 400 });
+    const authHeader = req.headers.get("authorization") ?? "";
+    const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : "";
+    if (!token) {
+      return NextResponse.json({ error: "Não autenticado." }, { status: 401 });
     }
+
+    const user = await getUserFromToken(token);
+    if (!user || !user.email) {
+      return NextResponse.json({ error: "Sessão inválida. Entre novamente." }, { status: 401 });
+    }
+
+    const body = (await req.json()) as { planId?: string };
+    const planId = body.planId ?? "";
 
     const plan = PLAN_PRICES[planId];
     if (!plan) {
@@ -58,7 +65,7 @@ export async function POST(req: NextRequest) {
           currency_id: "BRL",
         },
       ],
-      payer: { email: userEmail },
+      payer: { email: user.email },
       back_urls: {
         success: `${baseUrl}/planos?status=approved&plan=${planId}`,
         failure: `${baseUrl}/planos?status=rejected&plan=${planId}`,
@@ -66,7 +73,7 @@ export async function POST(req: NextRequest) {
       },
       auto_return: "approved" as const,
       notification_url: `${baseUrl}/api/webhooks/mercadopago`,
-      external_reference: `${userId}::${planId}`,
+      external_reference: `${user.id}::${planId}`,
       statement_descriptor: "MELHORSABOR",
     };
 
@@ -93,7 +100,7 @@ export async function POST(req: NextRequest) {
       await sb.from("user_profiles").update({
         mp_preference_id: data.id,
         selected_plan: planId,
-      }).eq("id", userId);
+      }).eq("id", user.id);
     } catch {
       // Não bloqueia o checkout se falhar aqui
     }

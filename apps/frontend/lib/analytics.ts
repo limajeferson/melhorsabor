@@ -16,6 +16,11 @@ export const AnalyticsEvent = {
   OnboardingOfferViewed: "onboarding_offer_viewed",
   OnboardingPlanSelected: "onboarding_plan_selected",
   OnboardingCompleted: "onboarding_completed",
+  PlansViewed: "plans_viewed",
+  CheckoutStarted: "checkout_started",
+  PaymentApproved: "payment_approved",
+  PaymentRejected: "payment_rejected",
+  PaymentPending: "payment_pending",
 } as const;
 
 export type AnalyticsEvent =
